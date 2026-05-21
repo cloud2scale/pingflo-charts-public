@@ -1,0 +1,77 @@
+# pingflo-agent-aws default values.
+#
+# The pingflo UI renders install snippets that pass `--set` flags
+# for the picked auth method; users don't typically edit this file
+# directly. See README.md for the full reference.
+
+# ──────────────── Image ────────────────
+# Defaults to the AWS agent's published image; `tag` falls back to
+# the chart's `appVersion` (pinned per chart release). Override
+# `tag` only for staged rollouts of a newer binary.
+image:
+  repository: public.ecr.aws/p9w7u7k0/agent/aws
+  tag: ""                # empty → falls back to .Chart.AppVersion
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+# ──────────────── Pairing token ────────────────
+# Required. The one-shot token from the project's "Add agent" flow.
+# Stored in an opaque Secret; the deployment env reads it from there.
+token: ""
+
+# ──────────────── AWS auth ────────────────
+# Pick ONE — or skip both if the pod inherits an EC2 / ECS instance
+# role (the AWS SDK auto-discovers it).
+#
+#   roleArn          — IRSA (EKS). Chart annotates the ServiceAccount
+#                      with `eks.amazonaws.com/role-arn`.
+#   accessKeyId  +
+#   secretAccessKey  — Static IAM user keys. Stored in the Secret
+#                      next to the token; deployment env reads
+#                      AWS_ACCESS_KEY_ID + AWS_SECRET_ACCESS_KEY.
+#
+# `region` is an optional override; the SDK picks one from the
+# instance metadata / IRSA context when blank.
+aws:
+  roleArn: ""
+  accessKeyId: ""
+  secretAccessKey: ""
+  region: ""
+
+# ──────────────── Deployment ────────────────
+replicaCount: 1
+
+serviceAccount:
+  create: true
+  name: ""             # blank → falls back to the release name
+  annotations: {}      # merged with the IRSA annotation from aws.roleArn
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Extra env vars merged into the deployment env list — useful for
+# proxy variables (HTTPS_PROXY, NO_PROXY) on locked-down clusters.
+# Format: [{ name: "HTTPS_PROXY", value: "..." }, …]
+extraEnv: []
+
+# Pod / container security context. Defaults to non-root + read-only
+# root filesystem since the binary doesn't write to disk.
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL

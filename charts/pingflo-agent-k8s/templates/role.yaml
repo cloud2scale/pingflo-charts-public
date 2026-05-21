@@ -1,0 +1,51 @@
+{{- /*
+  Namespace-scoped Role — the locked-down-cluster alternative to
+  ClusterRole. One Role per namespace in `rbac.namespaces`. Verbs
+  + resource list mirror the ClusterRole (minus cluster-scoped
+  resources like namespaces / nodes).
+*/ -}}
+{{- if and .Values.rbac.create (not .Values.rbac.clusterScope) -}}
+{{- range $ns := .Values.rbac.namespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: Role
+metadata:
+  name: {{ include "pingflo-agent-k8s.fullname" $ }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "pingflo-agent-k8s.labels" $ | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources:
+      - pods
+      - services
+      - events
+      - endpoints
+      - configmaps
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - statefulsets
+      - daemonsets
+      - replicasets
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["events.k8s.io"]
+    resources:
+      - events
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["discovery.k8s.io"]
+    resources:
+      - endpointslices
+    verbs: ["get", "list", "watch"]
+{{- end }}
+{{- end }}

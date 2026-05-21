@@ -1,0 +1,54 @@
+{{- /*
+  Cluster-scoped read-only ClusterRole. Gated by `rbac.create`
+  (default true) and `rbac.clusterScope` (default true — namespace-
+  scope Roles live in role.yaml when false).
+
+  Verbs are get/list/watch only — informer-driven discovery, no
+  mutating calls anywhere. Resource list covers the core API
+  group + apps/v1 + batch/v1 + events.k8s.io/v1 +
+  networking.k8s.io/v1 + discovery.k8s.io/v1.
+*/ -}}
+{{- if and .Values.rbac.create .Values.rbac.clusterScope -}}
+apiVersion: rbac.authorization.k8s.io/v1
+kind: ClusterRole
+metadata:
+  name: {{ include "pingflo-agent-k8s.fullname" . }}
+  labels:
+    {{- include "pingflo-agent-k8s.labels" . | nindent 4 }}
+rules:
+  - apiGroups: [""]
+    resources:
+      - namespaces
+      - nodes
+      - pods
+      - services
+      - events
+      - endpoints
+      - configmaps
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["apps"]
+    resources:
+      - deployments
+      - statefulsets
+      - daemonsets
+      - replicasets
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["batch"]
+    resources:
+      - jobs
+      - cronjobs
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["events.k8s.io"]
+    resources:
+      - events
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["networking.k8s.io"]
+    resources:
+      - ingresses
+      - networkpolicies
+    verbs: ["get", "list", "watch"]
+  - apiGroups: ["discovery.k8s.io"]
+    resources:
+      - endpointslices
+    verbs: ["get", "list", "watch"]
+{{- end }}

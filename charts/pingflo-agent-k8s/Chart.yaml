@@ -1,0 +1,29 @@
+apiVersion: v2
+name: pingflo-agent-k8s
+description: Pingflo Kubernetes discovery agent — read-only watch on namespaces, nodes, deployments, services, pods, events. Outbound HTTPS only.
+type: application
+
+# Chart version — bump on every change to chart templates / values
+# defaults. SemVer; chart-releaser keys releases on this.
+version: 0.1.0
+
+# K8s agent binary version this chart was tested against. Decoupled
+# from chart `version`.
+appVersion: "0.1.0"
+
+icon: https://pingflo.ai/logo.png
+home: https://pingflo.ai
+sources:
+  - https://github.com/cloud2scale/pingflo
+
+keywords:
+  - pingflo
+  - discovery
+  - agent
+  - kubernetes
+  - k8s
+  - sre
+
+maintainers:
+  - name: cloud2scale
+    url: https://pingflo.ai

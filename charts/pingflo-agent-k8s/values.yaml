@@ -1,0 +1,75 @@
+# pingflo-agent-k8s default values.
+#
+# The pingflo UI renders install snippets that pass the right
+# `--set` flags. Users don't typically edit this file directly. See
+# README.md for the full reference.
+
+# ──────────────── Image ────────────────
+image:
+  repository: public.ecr.aws/p9w7u7k0/agent/k8s
+  tag: ""                # empty → falls back to .Chart.AppVersion
+  pullPolicy: IfNotPresent
+imagePullSecrets: []
+
+# ──────────────── Pairing token ────────────────
+# Required. One-shot token from the project's "Add agent" flow.
+token: ""
+
+# ──────────────── Multi-cluster ────────────────
+# Required for multi-cluster installs. Pingflo identifies each
+# resource by `<cluster>/<namespace>/<kind>/<name>`, so two K8s
+# agents in the same project need distinct cluster labels. Pick
+# something stable + meaningful (region, account, environment).
+clusterName: ""
+
+# ──────────────── RBAC ────────────────
+# Default on — the K8s agent can't function without cluster (or
+# scoped) read access.
+#
+#   clusterScope=true   → ClusterRole + ClusterRoleBinding covering
+#                         every resource the agent watches.
+#   clusterScope=false  → per-namespace Role + RoleBinding for each
+#                         namespace in `namespaces`. Locked-down
+#                         cluster fallback; the agent's namespace
+#                         allow-list is the application-layer
+#                         match.
+rbac:
+  create: true
+  clusterScope: true
+  namespaces: []
+
+# ──────────────── Deployment ────────────────
+replicaCount: 1
+
+serviceAccount:
+  create: true
+  name: ""             # blank → falls back to the release name
+  annotations: {}
+
+resources:
+  limits:
+    cpu: 200m
+    memory: 256Mi
+  requests:
+    cpu: 50m
+    memory: 64Mi
+
+nodeSelector: {}
+tolerations: []
+affinity: {}
+
+# Extra env vars merged into the deployment env list — useful for
+# proxy variables (HTTPS_PROXY, NO_PROXY) on locked-down clusters.
+extraEnv: []
+
+# Pod / container security context.
+podSecurityContext:
+  runAsNonRoot: true
+  seccompProfile:
+    type: RuntimeDefault
+securityContext:
+  readOnlyRootFilesystem: true
+  allowPrivilegeEscalation: false
+  capabilities:
+    drop:
+      - ALL

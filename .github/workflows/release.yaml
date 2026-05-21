@@ -1,0 +1,57 @@
+name: release-charts
+
+# Push-to-main, chart-only trigger. The action is a no-op if no
+# Chart.yaml's `version:` has bumped, so commits that touch only
+# README / values doc strings won't churn `index.yaml`.
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'charts/**'
+      - '.github/workflows/release.yaml'
+
+# `contents: write` lets the action push to gh-pages + create Releases.
+# No other permissions needed; chart-releaser uses GITHUB_TOKEN which
+# is auto-provided by Actions — no secret to configure.
+permissions:
+  contents: write
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          # chart-releaser walks history to detect which charts have
+          # bumped since the last release — needs the full tree.
+          fetch-depth: 0
+
+      - name: Configure git identity
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+
+      - name: Install Helm
+        uses: azure/setup-helm@v4
+
+      # Packages every chart under ./charts whose version isn't
+      # already released, creates a GitHub Release per chart with
+      # the .tgz as an asset, and appends to `index.yaml` on the
+      # gh-pages branch. The branch is created on first run.
+      #
+      # `mark_as_latest: true` flags the most-recent chart Release as
+      # GitHub's "Latest" so the UI lands on it. Doesn't affect
+      # `index.yaml`'s ordering (that's by chart version).
+      - name: Release charts
+        uses: helm/chart-releaser-action@v1.6.0
+        with:
+          charts_dir: charts
+          mark_as_latest: true
+          # Safety net: if a previous workflow run already created the
+          # GitHub Release for this chart version (e.g. the index
+          # step failed downstream and we're retrying), don't fail
+          # the upload step — just skip + move on to indexing.
+          skip_existing: true
+        env:
+          CR_TOKEN: ${{ secrets.GITHUB_TOKEN }}

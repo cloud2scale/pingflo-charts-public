@@ -1,0 +1,10 @@
+# Helm package output — never committed; the chart-releaser action
+# generates these into a runner-local dir before uploading them as
+# GitHub Release assets.
+*.tgz
+
+# OS / editor noise
+.DS_Store
+.idea/
+.vscode/
+*.swp

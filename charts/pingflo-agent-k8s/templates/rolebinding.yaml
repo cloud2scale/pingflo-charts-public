@@ -1,0 +1,20 @@
+{{- if and .Values.rbac.create (not .Values.rbac.clusterScope) -}}
+{{- range $ns := .Values.rbac.namespaces }}
+---
+apiVersion: rbac.authorization.k8s.io/v1
+kind: RoleBinding
+metadata:
+  name: {{ include "pingflo-agent-k8s.fullname" $ }}
+  namespace: {{ $ns }}
+  labels:
+    {{- include "pingflo-agent-k8s.labels" $ | nindent 4 }}
+roleRef:
+  apiGroup: rbac.authorization.k8s.io
+  kind: Role
+  name: {{ include "pingflo-agent-k8s.fullname" $ }}
+subjects:
+  - kind: ServiceAccount
+    name: {{ include "pingflo-agent-k8s.serviceAccountName" $ }}
+    namespace: {{ $.Release.Namespace }}
+{{- end }}
+{{- end }}
