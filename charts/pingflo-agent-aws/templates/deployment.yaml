@@ -37,10 +37,6 @@ spec:
             - secretRef:
                 name: {{ include "pingflo-agent-aws.fullname" . }}
           env:
-            {{- if .Values.discoveryURL }}
-            - name: PINGFLO_AGENT_WS_URL
-              value: {{ .Values.discoveryURL | quote }}
-            {{- end }}
             {{- with .Values.extraEnv }}
             {{- toYaml . | nindent 12 }}
             {{- end }}

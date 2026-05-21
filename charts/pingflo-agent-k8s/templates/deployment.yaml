@@ -34,10 +34,6 @@ spec:
             - secretRef:
                 name: {{ include "pingflo-agent-k8s.fullname" . }}
           env:
-            {{- if .Values.discoveryURL }}
-            - name: PINGFLO_AGENT_WS_URL
-              value: {{ .Values.discoveryURL | quote }}
-            {{- end }}
             {{- if .Values.clusterName }}
             - name: PINGFLO_CLUSTER_NAME
               value: {{ .Values.clusterName | quote }}

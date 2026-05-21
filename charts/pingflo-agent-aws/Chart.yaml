@@ -5,7 +5,7 @@ type: application
 
 # Chart version — bump on every change to chart templates / values
 # defaults. SemVer; chart-releaser keys releases on this.
-version: 0.1.0
+version: 0.1.1
 
 # AWS agent binary version this chart was tested against. Decoupled
 # from chart `version` so chart edits + binary cuts can be timed
