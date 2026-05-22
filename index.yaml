@@ -25,6 +25,30 @@ entries:
     urls:
     - https://github.com/cloud2scale/pingflo-charts-public/releases/download/pingflo-agent-aws-0.1.2/pingflo-agent-aws-0.1.2.tgz
     version: 0.1.2
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-05-22T07:12:06.15785727Z"
+    description: Pingflo AWS discovery agent — read-only EC2/RDS/EKS/S3 etc. Outbound
+      HTTPS only.
+    digest: 9bc70c4b89d43f9d1eee8880687fb1f10537bebdac15ff1a1c3eaa0541ebdb63
+    home: https://pingflo.ai
+    icon: https://pingflo.ai/logo.png
+    keywords:
+    - pingflo
+    - discovery
+    - agent
+    - aws
+    - sre
+    maintainers:
+    - name: cloud2scale
+      url: https://pingflo.ai
+    name: pingflo-agent-aws
+    sources:
+    - https://github.com/cloud2scale/pingflo
+    type: application
+    urls:
+    - https://github.com/cloud2scale/pingflo-charts-public/releases/download/pingflo-agent-aws-0.1.0/pingflo-agent-aws-0.1.0.tgz
+    version: 0.1.0
   pingflo-agent-k8s:
   - apiVersion: v2
     appVersion: 0.1.0
@@ -51,4 +75,4 @@ entries:
     urls:
     - https://github.com/cloud2scale/pingflo-charts-public/releases/download/pingflo-agent-k8s-0.1.0/pingflo-agent-k8s-0.1.0.tgz
     version: 0.1.0
-generated: "2026-05-22T07:11:11.752881381Z"
+generated: "2026-05-22T07:12:06.157865776Z"
