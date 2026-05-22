@@ -5,12 +5,12 @@ type: application
 
 # Chart version — bump on every change to chart templates / values
 # defaults. SemVer; chart-releaser keys releases on this.
-version: 0.1.2
+version: 0.1.0
 
 # AWS agent binary version this chart was tested against. Decoupled
 # from chart `version` so chart edits + binary cuts can be timed
 # independently.
-appVersion: "22-05-2026-5"
+appVersion: "0.1.0"
 
 icon: https://pingflo.ai/logo.png
 home: https://pingflo.ai
