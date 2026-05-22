@@ -1,2 +1,54 @@
 apiVersion: v1
-entries: {}
+entries:
+  pingflo-agent-aws:
+  - apiVersion: v2
+    appVersion: 22-05-2026-5
+    created: "2026-05-22T07:11:11.558118028Z"
+    description: Pingflo AWS discovery agent — read-only EC2/RDS/EKS/S3 etc. Outbound
+      HTTPS only.
+    digest: ab6cb96fa4ed8d369186eff6a7055556167d9357cbba17c866e7f5131857c305
+    home: https://pingflo.ai
+    icon: https://pingflo.ai/logo.png
+    keywords:
+    - pingflo
+    - discovery
+    - agent
+    - aws
+    - sre
+    maintainers:
+    - name: cloud2scale
+      url: https://pingflo.ai
+    name: pingflo-agent-aws
+    sources:
+    - https://github.com/cloud2scale/pingflo
+    type: application
+    urls:
+    - https://github.com/cloud2scale/pingflo-charts-public/releases/download/pingflo-agent-aws-0.1.2/pingflo-agent-aws-0.1.2.tgz
+    version: 0.1.2
+  pingflo-agent-k8s:
+  - apiVersion: v2
+    appVersion: 0.1.0
+    created: "2026-05-22T07:11:11.752875692Z"
+    description: Pingflo Kubernetes discovery agent — read-only watch on namespaces,
+      nodes, deployments, services, pods, events. Outbound HTTPS only.
+    digest: 0f340313b171718568ad600963e669be886f2430f9535464d8930a8e1d72cb8e
+    home: https://pingflo.ai
+    icon: https://pingflo.ai/logo.png
+    keywords:
+    - pingflo
+    - discovery
+    - agent
+    - kubernetes
+    - k8s
+    - sre
+    maintainers:
+    - name: cloud2scale
+      url: https://pingflo.ai
+    name: pingflo-agent-k8s
+    sources:
+    - https://github.com/cloud2scale/pingflo
+    type: application
+    urls:
+    - https://github.com/cloud2scale/pingflo-charts-public/releases/download/pingflo-agent-k8s-0.1.0/pingflo-agent-k8s-0.1.0.tgz
+    version: 0.1.0
+generated: "2026-05-22T07:11:11.752881381Z"
